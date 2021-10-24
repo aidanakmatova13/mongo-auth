@@ -9,7 +9,7 @@ const singUp = (req, res) => {
         }
         let newUser = new Users({name, email, password})
         newUser.save((error, savedUser) => {
-            if (error){
+            if (error) {
                 return res.status(404).json({error: "Ошибка сохранеия"})
             }
             return res.json({message: "Пользователь успешно зарегистрирован"})
@@ -19,9 +19,9 @@ const singUp = (req, res) => {
 
 const singIn = (req, res) => {
     const {email, password} = req.body
-    Users.findOne({email}).exec(async (error, user) =>{
-        if (error) {
-            return  res.status(400).json({error: "Пользователь не найден"})
+    Users.findOne({email}).exec(async (error, user) => {
+        if (!user) {
+            return res.status(400).json({error: "Пользователь не найден"})
         }
         const correctPassword = await user.authenticate(password)
 
@@ -30,9 +30,12 @@ const singIn = (req, res) => {
         }
         const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {expiresIn: "5d"})
 
-        return res.json({token: token, user: {_id: user._id, name: user.name, email: user.email, role: user.role}})
+        return res.json({
+            token: token,
+            user: {_id: user._id, name: user.name, email: user.email, role: user.role}
+        })
     })
 }
 
 
-module.exports = {singUp , singIn}
+module.exports = {singUp, singIn}
