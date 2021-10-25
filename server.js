@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const chalk = require('chalk')
 const mongoose = require('mongoose')
 const authRouter = require('./routes/auth')
+const newsRouter = require('./routes/news')
 require('dotenv').config()
 
 const server = express()
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO_URL)
     .catch(() => console.log(chalk.red("db is not connected")))
 
 server.use('/api/v1', authRouter)
+server.use('/api/v1', newsRouter)
 
 
 server.listen(process.env.PORT, () => {
