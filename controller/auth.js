@@ -53,5 +53,20 @@ const authenticate = (req, res) => {
 
 }
 
+const getUserInfo = async (req, res) => {
+    try {
+        const user = await Users.findById(req.params.id).populate("news")
+        delete user.password
+        res.json({
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                news: user.news
+        })
+    } catch (e) {
+        res.status(400).json({message: "не удалось получить пользователей"})
+    }
+}
 
-module.exports = {singUp, singIn, authenticate}
+module.exports = {singUp, singIn, authenticate, getUserInfo}

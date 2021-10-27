@@ -15,6 +15,9 @@ const newsSchema = new mongoose.Schema({
         required: true,
         unique: true,
         lowercase: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId, ref: "users"
     }
 }, {timestamps: true})
 

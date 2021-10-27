@@ -20,9 +20,10 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     role: {
-        type:String,
+        type: String,
         default: "user"
-    }
+    },
+    news: [{type: mongoose.Schema.Types.ObjectId, ref: "users"}]
 }, {timestamps: true})
 
 
