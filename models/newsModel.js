@@ -1,13 +1,22 @@
 const mongoose = require('mongoose');
-const {Schema} = require("mongoose");
 
 
 //создаем mongo - схему
 const newsSchema = new mongoose.Schema({
-    title: {type: String, required: true},
-    description: {type: String, required: true},
-    user_id: {type: String, required: true}
-})
+    title: {
+        type: String,
+        trim: true,
+        required: true,
+        max: 28
+    },
+    description: {
+        type: String,
+        trim: true,
+        required: true,
+        unique: true,
+        lowercase: true
+    }
+}, {timestamps: true})
 
 const newsModel = mongoose.model("news", newsSchema)
 

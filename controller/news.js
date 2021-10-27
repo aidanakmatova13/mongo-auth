@@ -1,10 +1,19 @@
 const jwt = require('jsonwebtoken')
 const News = require('../models/newsModel')
 
-const getAllNews = (req, res) => {
+const getAllNews = async (req, res) => {
+    const news = await News.find({})
+    res.json(news)
 }
 
-const addNews = (req, res) => {
+const addNews = async (req, res) => {
+    try {
+        const newPost = new News(req.body)
+        const savedPost = await newPost //.save()
+        res.json(savedPost)
+    } catch (e) {
+        res.status(400).json({"message" : "Ошибка сохранения"})
+    }
 }
 
 const deleteNews = (req, res) => {

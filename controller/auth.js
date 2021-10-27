@@ -28,7 +28,7 @@ const singIn = (req, res) => {
         if (!correctPassword) {
             return res.status(400).json({error: "Пароль или email неверны"})
         }
-        const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {expiresIn: "5d"})
+        const token = jwt.sign({_id: user._id}, process.env.SECRET_KEY, {expiresIn: "5d"}) //создаем токен
 
         return res.json({
             token: token,
@@ -37,5 +37,21 @@ const singIn = (req, res) => {
     })
 }
 
+const authenticate = (req, res) => {
+    try {
+        const userId = jwt.verify(req.body.token, process.env.SECRET_KEY) //расшифровываем token
+        Users.findOne({_id: userId._id}).exec(async (error, user) => {
+            return res.json({
+                token: req.body.token,
+                user: {_id: user._id, name: user.name, email: user.email, role: user.role}
+            }) //ответ на клиент возвращаем токен и user
+            }
+        )
+    } catch (e) {
+        res.status(401).json({message: "not authorized"})
+    }
 
-module.exports = {singUp, singIn}
+}
+
+
+module.exports = {singUp, singIn, authenticate}

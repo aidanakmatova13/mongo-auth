@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URL)
     .catch(() => console.log(chalk.red("db is not connected")))
 
 server.use('/api/v1', authRouter)
-server.use('/api/v1', newsRouter)
+server.use('/api/v1/news', newsRouter)
 
 
 server.listen(process.env.PORT, () => {
